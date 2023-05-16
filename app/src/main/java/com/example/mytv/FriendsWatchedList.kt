@@ -158,7 +158,7 @@ fun TwoWordsRowWithImage() {
     }
     Spacer(modifier = Modifier.height(1.dp))
     Image(
-        painter = painterResource(id = R.drawable.group_80),
+        painter = painterResource(id = R.drawable.Group_86),
         contentDescription = "list movies i watched",
         modifier = Modifier
             .fillMaxWidth()
@@ -211,7 +211,7 @@ fun TwoWordsSecondRowWithImage() {
     }
     Spacer(modifier = Modifier.height(1.dp))
     Image(
-        painter = painterResource(id = R.drawable.group_82),
+        painter = painterResource(id = R.drawable.Group_83),
         contentDescription = "old hollywood",
         modifier = Modifier
             .fillMaxWidth()
@@ -251,7 +251,7 @@ fun TwoWordsThirdRowWithImage() {
                     .size(40.dp)
                     .padding(1.dp)
             ) {
-                val image: Painter = painterResource(id = R.drawable.group_82_1_)
+                val image: Painter = painterResource(id = R.drawable.User_2)
                 Image(
                     painter = image,
                     contentDescription = "icon",
@@ -264,7 +264,7 @@ fun TwoWordsThirdRowWithImage() {
     }
     Spacer(modifier = Modifier.height(1.dp))
     Image(
-        painter = painterResource(id = R.drawable.group_84),
+        painter = painterResource(id = R.drawable.Group_81),
         contentDescription = "old hollywood",
         modifier = Modifier
             .fillMaxWidth()
