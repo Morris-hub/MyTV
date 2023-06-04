@@ -1,6 +1,6 @@
 package com.example.mytv
 
-
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,10 +8,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mytv.R
 
 class MyPageActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +43,8 @@ fun MyPageContent() {
         AccountImage()
 
         WatchedMoviesList()
+
+        BottomNavigation()
     }
 }
 
@@ -122,3 +124,73 @@ fun WatchedMoviesList() {
     )
 }
 
+@SuppressLint("UnrememberedMutableState")
+@Composable
+fun BottomNavigation() {
+    var selectedItem by mutableIntStateOf(0)
+
+    BottomNavigation(
+        backgroundColor = Color(0xFF426582),
+        modifier = Modifier.padding(top = 8.dp)
+    ) {
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.terms_and_conditions),
+                    contentDescription = "Discovery"
+                )
+            },
+            label = { Text(text = "Discover") },
+            selected = selectedItem == 0,
+            onClick = {  }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.lightning_bolt),
+                    contentDescription = "Activity"
+                )
+            },
+            label = { Text(text = "Activity") },
+            selected = selectedItem == 1,
+            onClick = {  }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.search),
+                    contentDescription = "Search"
+                )
+            },
+            label = { Text(text = "Search") },
+            selected = selectedItem == 2,
+            onClick = {  }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.airdrop),
+                    contentDescription = "Nearby"
+                )
+            },
+            label = { Text(text = "Nearby") },
+            selected = selectedItem == 3,
+            onClick = {  }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.customer),
+                    contentDescription = "Profile"
+                )
+            },
+            label = { Text(text = "Profile") },
+            selected = selectedItem == 4,
+            onClick = { }
+        )
+    }
+}

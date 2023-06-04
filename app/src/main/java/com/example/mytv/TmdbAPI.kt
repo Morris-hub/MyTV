@@ -1,5 +1,6 @@
 package com.example.mytv
 
+import android.app.DownloadManager
 import androidx.compose.runtime.R
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -141,10 +142,9 @@ fun searchFilms(apiKey: String, filmName: String): List<FilmDetails> {
     val films: MutableList<FilmDetails> = mutableListOf()
 
     val url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$filmName"
-    val request = Request.Builder()
+    val request = DownloadManager.Request.Builder()
         .url(url)
         .build()
-
     val response = client.newCall(request).execute()
     val responseBody = response.body?.string()
 
@@ -164,4 +164,3 @@ fun searchFilms(apiKey: String, filmName: String): List<FilmDetails> {
 
     return films
 }
-
