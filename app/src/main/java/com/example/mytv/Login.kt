@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
-import android.os.Build
 import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.BorderStroke
@@ -49,9 +48,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import com.example.mytv.R
+
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -60,13 +57,13 @@ import com.google.firebase.auth.FirebaseAuth
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun Login(
-    onRegisterButtonClick: () -> Unit,
+    navigateToRegister: () -> Unit,
+    navigateToMyPageContent: () -> Unit
 
     ) {
 
     val focusManager = LocalFocusManager.current
 
-    val navController = rememberNavController()
     var email by remember {
         mutableStateOf("")
     }
@@ -198,7 +195,7 @@ fun Login(
 
                         if (task.isSuccessful) {
                             Log.d(TAG, "The User has successfully logged in")
-                            navController.navigate("my_page")
+                            navigateToMyPageContent()
                         } else {
                             Log.d(TAG, "The User has FAILED to log in", task.exception)
                         }
@@ -220,11 +217,7 @@ fun Login(
 
 
         Button(
-            onClick = {
-                    navController.navigate("my_page")
-
-
-            },
+            onClick = {navigateToRegister() },
 
             modifier = Modifier.padding(top = 8.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF314C61)),
@@ -237,13 +230,8 @@ fun Login(
                 fontSize = 16.sp
             )
         }
-        navController.currentBackStackEntry?.let { backStackEntry ->
-            val destination = backStackEntry.destination.route
-            if (destination == "register_screen") {
-                // Navigate to the register screen
-                onRegisterButtonClick()
-            }
+
         }
     }
-}
+
 
