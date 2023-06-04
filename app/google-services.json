@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "86646536123",
+    "project_id": "login-mytv",
+    "storage_bucket": "login-mytv.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86646536123:android:be30b1b9e5b89a192b369e",
+        "android_client_info": {
+          "package_name": "com.example.mytv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86646536123-unuccqvf0c61sb6hbak3dm48e1b9qch7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB9_q75lp7FxNTqF7u3hq5a-lPKYPsbxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86646536123-unuccqvf0c61sb6hbak3dm48e1b9qch7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
