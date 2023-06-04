@@ -25,8 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.material3.Text
 
 
 
@@ -158,7 +156,7 @@ fun TwoWordsRowWithImage() {
     }
     Spacer(modifier = Modifier.height(1.dp))
     Image(
-        painter = painterResource(id = R.drawable.Group_86),
+        painter = painterResource(id = R.drawable.group_86),
         contentDescription = "list movies i watched",
         modifier = Modifier
             .fillMaxWidth()
@@ -211,7 +209,7 @@ fun TwoWordsSecondRowWithImage() {
     }
     Spacer(modifier = Modifier.height(1.dp))
     Image(
-        painter = painterResource(id = R.drawable.Group_83),
+        painter = painterResource(id = R.drawable.group_83),
         contentDescription = "old hollywood",
         modifier = Modifier
             .fillMaxWidth()
@@ -251,7 +249,7 @@ fun TwoWordsThirdRowWithImage() {
                     .size(40.dp)
                     .padding(1.dp)
             ) {
-                val image: Painter = painterResource(id = R.drawable.User_2)
+                val image: Painter = painterResource(id = R.drawable.user_2)
                 Image(
                     painter = image,
                     contentDescription = "icon",
@@ -264,7 +262,7 @@ fun TwoWordsThirdRowWithImage() {
     }
     Spacer(modifier = Modifier.height(1.dp))
     Image(
-        painter = painterResource(id = R.drawable.Group_81),
+        painter = painterResource(id = R.drawable.group_81),
         contentDescription = "old hollywood",
         modifier = Modifier
             .fillMaxWidth()
