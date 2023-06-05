@@ -1,16 +1,13 @@
 package com.example.mytv
 
-
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-
-
-
 import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
@@ -26,12 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             ComposeView(this@MainActivity).apply {
                 setContent {
-
-                    MytvApp()
-
-
-
-
+                    MyComposable(viewModel)
                 }
             }
         }
@@ -40,11 +32,11 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MyComposable(viewModel: ViewModel) {
-    MyPage(viewModel)
+    RecommendedFilmsScreen()
 }
 
-fun MyPage(viewModel: ViewModel) {
-
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    RecommendedFilmsScreen()
 }
-
-

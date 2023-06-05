@@ -1,6 +1,6 @@
 package com.example.mytv
 
-import android.app.DownloadManager
+import android.app.DownloadManager.Request
 import androidx.compose.runtime.R
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -27,11 +27,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-// import com.example.tmdbapi.ui.theme.TMDBAPITheme
+import androidx.media3.exoplayer.offline.DownloadManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
-import okhttp3.Request
+//import okhttp3.Request
 import org.json.JSONObject
 
 class TmdbAPI : ComponentActivity() {

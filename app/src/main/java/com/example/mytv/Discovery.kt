@@ -127,10 +127,11 @@ fun getRecommendedFilms(apiKey: String): List<FilmDetails> = runBlocking {
     }
 
     films
-}
+}/*
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     RecommendedFilmsScreen()
 }
+*/

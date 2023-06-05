@@ -80,7 +80,7 @@ fun MySettingsPage() {
                         .padding(bottom = 1.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.user_01cc),
+                        painter = painterResource(id = R.drawable.user_01c),
                         contentDescription = "Profile Picture"
                     )
                 }
