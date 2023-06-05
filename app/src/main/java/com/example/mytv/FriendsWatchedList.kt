@@ -251,7 +251,7 @@ fun TwoWordsThirdRowWithImage() {
                     .size(40.dp)
                     .padding(1.dp)
             ) {
-                val image: Painter = painterResource(id = R.drawable.group_82_1_)
+                val image: Painter = painterResource(id = R.drawable.group_82_1)
                 Image(
                     painter = image,
                     contentDescription = "icon",
