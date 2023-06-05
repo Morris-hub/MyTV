@@ -1,13 +1,6 @@
 package com.example.mytv
 
-import android.app.DownloadManager
-import androidx.compose.runtime.R
 import androidx.compose.foundation.Image
-import androidx.compose.runtime.Composable
-import coil.compose.rememberImagePainter
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,74 +8,44 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-// import com.example.tmdbapi.ui.theme.TMDBAPITheme
+import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 
-class TmdbAPI : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    FilmSearchScreen()
-                }
-
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmSearchScreen() {
-    var filmName by remember { mutableStateOf("") }
-    var filmList by remember { mutableStateOf<List<FilmDetails>>(emptyList()) }
+fun RecommendedFilmsScreen() {
     val apiKey = "75838512c16c0a58994621ef0e821d86"
     val coroutineScope = rememberCoroutineScope()
+    val filmList = remember { mutableStateListOf<FilmDetails>() }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TextField(
-            value = filmName,
-            onValueChange = { filmName = it },
-            label = { Text("Filmname eingeben") },
-            modifier = Modifier.padding(16.dp),
-            shape = MaterialTheme.shapes.medium,
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled)
-            )
-        )
-
+    Column(modifier = Modifier.fillMaxSize()) {
         Button(
             onClick = {
                 coroutineScope.launch(Dispatchers.IO) {
-                    val films = searchFilms(apiKey, filmName)
-                    filmList = films
+                    val films = getRecommendedFilms(apiKey)
+                    filmList.clear()
+                    filmList.addAll(films)
                 }
             },
             modifier = Modifier.padding(16.dp)
         ) {
-            Text("Suchen")
+            Text("Empfohlene Filme anzeigen")
         }
 
         LazyColumn(
@@ -97,7 +60,7 @@ fun FilmSearchScreen() {
 }
 
 @Composable
-fun FilmListItem(film: FilmDetails) {
+fun DiscoveryListItem(film: FilmDetail) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         elevation = 4.dp
@@ -105,12 +68,12 @@ fun FilmListItem(film: FilmDetails) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "Titel: ${film.title}",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
                 text = "Beschreibung: ${film.description}",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.body2,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             film.imageUrl?.let { imageUrl ->
@@ -118,7 +81,7 @@ fun FilmListItem(film: FilmDetails) {
                     data = "https://image.tmdb.org/t/p/w500$imageUrl",
                     builder = {
                         crossfade(true)
-                       // placeholder(R.drawable.placeholder) // Placeholder image resource, optional
+                        placeholder(R.drawable.placeholder) // Placeholder image resource, optional
                     }
                 )
                 Image(
@@ -131,20 +94,21 @@ fun FilmListItem(film: FilmDetails) {
     }
 }
 
-data class FilmDetails(
+data class FilmDetail(
     val title: String,
     val description: String,
     val imageUrl: String?
 )
 
-fun searchFilms(apiKey: String, filmName: String): List<FilmDetails> {
+fun getRecommendedFilms(apiKey: String): List<FilmDetails> = runBlocking {
     val client = OkHttpClient()
     val films: MutableList<FilmDetails> = mutableListOf()
 
-    val url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$filmName"
-    val request = DownloadManager.Request.Builder()
+    val url = "https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key=$apiKey"
+    val request = Request.Builder()
         .url(url)
         .build()
+
     val response = client.newCall(request).execute()
     val responseBody = response.body?.string()
 
@@ -162,5 +126,11 @@ fun searchFilms(apiKey: String, filmName: String): List<FilmDetails> {
         }
     }
 
-    return films
+    films
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    RecommendedFilmsScreen()
 }

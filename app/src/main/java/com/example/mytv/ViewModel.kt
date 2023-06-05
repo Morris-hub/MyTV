@@ -39,7 +39,7 @@ class MyTvViewModel : ViewModel() {
         val responseBody = response.body?.string()
 
         if (response.isSuccessful && responseBody != null) {
-            val json = JSONObject(responseBody)
+            val json = JSONObject(responseBody.orEmpty())
             val results = json.getJSONArray("results")
 
             for (i in 0 until results.length()) {
