@@ -1,6 +1,6 @@
 package com.example.mytv
 
-import android.app.DownloadManager.Request
+//import android.app.DownloadManager.Request
 import androidx.compose.runtime.R
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -31,7 +31,7 @@ import androidx.media3.exoplayer.offline.DownloadManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
-//import okhttp3.Request
+import okhttp3.Request
 import org.json.JSONObject
 
 class TmdbAPI : ComponentActivity() {
@@ -76,8 +76,8 @@ fun FilmSearchScreen() {
         Button(
             onClick = {
                 coroutineScope.launch(Dispatchers.IO) {
-                    val films = searchFilms(apiKey, filmName)
-                    filmList = films
+                   // val films = searchFilms(apiKey, filmName)
+                    //filmList = films
                 }
             },
             modifier = Modifier.padding(16.dp)
@@ -142,7 +142,7 @@ fun searchFilms(apiKey: String, filmName: String): List<FilmDetails> {
     val films: MutableList<FilmDetails> = mutableListOf()
 
     val url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$filmName"
-    val request = DownloadManager.Request.Builder()
+    val request = Request.Builder()
         .url(url)
         .build()
     val response = client.newCall(request).execute()

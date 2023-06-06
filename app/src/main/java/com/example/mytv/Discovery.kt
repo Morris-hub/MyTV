@@ -1,110 +1,122 @@
-package com.example.mytv
+package com.example.tmdbapi
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.mytv.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 
+class Discovery : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RecommendedMoviesScreen()
+        }
+    }
+}
+
 @Composable
-fun RecommendedFilmsScreen() {
-    val apiKey = "75838512c16c0a58994621ef0e821d86"
-    val coroutineScope = rememberCoroutineScope()
+fun RecommendedMoviesScreen() {
     val filmList = remember { mutableStateListOf<FilmDetails>() }
+    val apiKey = "75838512c16c0a58994621ef0e821d86" // Replace with your TMDB API key
+    val coroutineScope = rememberCoroutineScope()
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Button(
-            onClick = {
-                coroutineScope.launch(Dispatchers.IO) {
-                    val films = getRecommendedFilms(apiKey)
-                    filmList.clear()
-                    filmList.addAll(films)
-                }
-            },
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text("Empfohlene Filme anzeigen")
+    LaunchedEffect(Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val recommendedMovies = getRecommendedMovies(apiKey)
+            filmList.addAll(recommendedMovies)
         }
+    }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            items(filmList) { film ->
-                FilmListItem(film)
-            }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(0.dp)
+    ) {
+        items(filmList) { film ->
+            FilmGridItem(film)
         }
     }
 }
 
 @Composable
-fun DiscoveryListItem(film: FilmDetail) {
+fun FilmGridItem(film: FilmDetails) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-        elevation = 4.dp
+        modifier = Modifier
+            // .padding(8.dp)
+            //.fillMaxWidth()
+            .height(200.dp),
+        //elevation = 4.dp
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = "Titel: ${film.title}",
-                style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
-            Text(
-                text = "Beschreibung: ${film.description}",
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+        Column(
+            //modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center
+        ) {
             film.imageUrl?.let { imageUrl ->
-                val painter = rememberImagePainter(
-                    data = "https://image.tmdb.org/t/p/w500$imageUrl",
-                    builder = {
-                        crossfade(true)
-                        placeholder(R.drawable.placeholder) // Placeholder image resource, optional
-                    }
-                )
                 Image(
-                    painter = painter,
+                    painter = rememberImagePainter(
+                        data = "https://image.tmdb.org/t/p/w500$imageUrl",
+                        builder = {
+                            crossfade(true)
+                            placeholder(R.drawable.placeholder) // Placeholder image resource, optional
+                        }
+                    ),
                     contentDescription = "Film Poster",
-                    modifier = Modifier.padding(top = 8.dp)
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        //.aspectRatio(0.7f)
+                        .fillMaxHeight()
                 )
             }
+            Text(
+                text = film.title,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }
 
-data class FilmDetail(
+data class FilmDetails(
     val title: String,
-    val description: String,
     val imageUrl: String?
 )
 
-fun getRecommendedFilms(apiKey: String): List<FilmDetails> = runBlocking {
+fun getRecommendedMovies(apiKey: String): List<FilmDetails> {
     val client = OkHttpClient()
     val films: MutableList<FilmDetails> = mutableListOf()
 
-    val url = "https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key=$apiKey"
+    val url = "https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&sort_by=popularity.desc"
     val request = Request.Builder()
         .url(url)
         .build()
@@ -119,19 +131,17 @@ fun getRecommendedFilms(apiKey: String): List<FilmDetails> = runBlocking {
         for (i in 0 until results.length()) {
             val filmObject = results.getJSONObject(i)
             val title = filmObject.getString("title")
-            val description = filmObject.getString("overview")
             val imageUrl = filmObject.getString("poster_path")
-            val film = FilmDetails(title = title, description = description, imageUrl = imageUrl)
+            val film = FilmDetails(title = title, imageUrl = imageUrl)
             films.add(film)
         }
     }
 
-    films
-}/*
+    return films
+}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    RecommendedFilmsScreen()
+    RecommendedMoviesScreen()
 }
-*/

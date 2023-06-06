@@ -1,6 +1,6 @@
 package com.example.mytv
 
-import android.app.DownloadManager
+import android.app.DownloadManager.Request
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,7 +32,7 @@ class MyTvViewModel : ViewModel() {
         val films: MutableList<FilmDetails> = mutableListOf()
 
         val url = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$filmName"
-        val request = DownloadManager.Request.Builder()
+        val request = Request.Builder()
             .url(url)
             .build()
         val response = client.newCall(request).execute()
