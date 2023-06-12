@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tmdbapi.RecommendedMoviesScreen
 import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
@@ -32,11 +33,11 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MyComposable(viewModel: ViewModel) {
-    RecommendedFilmsScreen()
+    RecommendedMoviesScreen()
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    RecommendedFilmsScreen()
+    RecommendedMoviesScreen()
 }

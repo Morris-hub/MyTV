@@ -1,11 +1,15 @@
 package com.example.mytv
 
-import android.app.DownloadManager.Request
+//import android.app.DownloadManager.Request
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.json.JSONObject
+import okhttp3.Request
+import okhttp3.OkHttpClient
+
+
 
 data class MyTv(
     var filmName: String,
@@ -35,7 +39,7 @@ class MyTvViewModel : ViewModel() {
         val request = Request.Builder()
             .url(url)
             .build()
-        val response = client.newCall(request).execute()
+        val response = OkHttpClient().newCall(request).execute()
         val responseBody = response.body?.string()
 
         if (response.isSuccessful && responseBody != null) {

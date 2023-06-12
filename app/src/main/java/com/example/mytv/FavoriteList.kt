@@ -55,7 +55,7 @@ fun MyScreenContent() {
             )
 
             Image(
-                painter = painterResource(R.drawable.delete_1),
+                painter = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 modifier = Modifier.size(30.dp)
                     .padding(2.dp),
@@ -69,14 +69,14 @@ fun MyScreenContent() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(R.drawable.placeholder_image10),
+                painter = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 modifier = Modifier.size(160.dp),
                 contentScale = ContentScale.Crop
             )
 
             Image(
-                painter = painterResource(R.drawable.placeholder_image10),
+                painter = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 modifier = Modifier
                     .size(160.dp),
@@ -85,7 +85,7 @@ fun MyScreenContent() {
             )
 
             Image(
-                painter = painterResource(R.drawable.placeholder_image10),
+                painter = painterResource(R.drawable.placeholder),
                 contentDescription = null,
                 modifier = Modifier.size(160.dp),
                 contentScale = ContentScale.Crop
